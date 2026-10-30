@@ -1,25 +1,28 @@
 // ╔══════════════════════════════════════════════════════════╗
 // ║  AUTHOR: Abdullah Al Mamun                             ║
-// ║  GITHUB: @A2MBD3                                       ║
-// ║  NEBULA DYNAMIC (USERDATA UPGRADE)                     ║
-// ║  CREDITS: Abdullah Al Mamun (@A2MBD3)                  ║
+// ║  GITHUB: @itz_khairum                                       ║
+// ║  NEBULA /b4 — CARBON EMBER                     ║
+// ║  CREDITS: Abdullah Al Mamun (@itz_khairum)                  ║
 // ║  PORTFOLIO: a2mbd3.paged.dev                           ║
 // ╚══════════════════════════════════════════════════════════╝
 
 (function () {
   "use strict";
 
+  const __NEBULA_SECURE_TOKEN__ = "ABDULLAH-RMRTVVKORMRMGDJCORGCARJWWINKTYRC";
+
+
   // ═══════════════════ APP INFO ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-  const APP_NAME = "NEBULA";
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
+  const APP_NAME = "ITZ_KHAIRUM";
   const APP_VERSION = "27.0";
   const APP_FULL_NAME = APP_NAME + " v" + APP_VERSION;
 
   // ═══════════════════ DEBUG LOGGER ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   const DBG = {
     _logs: [],
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     log: function(tag, msg, data) {
       const entry = {
         time: new Date().toISOString().split('T')[1].split('.')[0],
@@ -31,7 +34,7 @@
       if (this._logs.length > 500) this._logs.shift();
       console.log(`[${entry.time}] [${tag}] ${msg}`, data || '');
     },
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     error: function(tag, msg, data) {
       const entry = {
         time: new Date().toISOString().split('T')[1].split('.')[0],
@@ -44,18 +47,18 @@
       if (this._logs.length > 500) this._logs.shift();
       console.error(`[${entry.time}] [${tag}] ${msg}`, data || '');
     },
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     getLogs: function(count) {
       return this._logs.slice(-(count || 50));
     },
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     dump: function() {
       console.table(this._logs);
     }
   };
 
   // ═══════════════════ TARGET DETECTION ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   const DIRECT_TARGETS = {
     'aincrad': { target: 'aincrad', name: 'Aincrad', apiType: '2', moduleType: 'standard' },
     'aincrad-proxy': { target: 'aincrad-proxy', name: 'AINCRAD PROXY', apiType: '1', moduleType: 'standard' },
@@ -66,9 +69,14 @@
 
   let USER_ID = 0;
   let directTarget = null;
-  
-  if (typeof window.ABDULLAH_BOOKMARK_LOAD !== "undefined") {
-    const raw = window.ABDULLAH_BOOKMARK_LOAD;
+
+  // Accept window.A2MBD3 (preferred) or legacy window.ABDULLAH_BOOKMARK_LOAD
+  const __BOOKMARK_RAW__ = (typeof window.A2MBD3 !== "undefined")
+    ? window.A2MBD3
+    : (typeof window.ABDULLAH_BOOKMARK_LOAD !== "undefined" ? window.ABDULLAH_BOOKMARK_LOAD : undefined);
+
+  if (typeof __BOOKMARK_RAW__ !== "undefined") {
+    const raw = __BOOKMARK_RAW__;
     
     // Check if it's a target name string
     if (typeof raw === 'string') {
@@ -101,79 +109,76 @@
   }
   DBG.log('INIT', 'Final USER_ID=' + USER_ID + ', directTarget=' + (directTarget ? directTarget.name : 'none'));
 
-  // ═══════════════════ CONFIGURATION ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // ═══════════════════ CONFIGURATION (beta /b — no secrets, no /conf) ═══════════════════
+  // Credit: Abdullah Al Mamun (@itz_khairum)
+  // __NEBULA_SECURE_TOKEN__ is injected by server on each GET /b
   let CONFIG = {
     status: 1,
     musicListUrl: "https://raw.githubusercontent.com/A2MBD3/Aincrad/main/assets/music.txt",
     apiBaseUrl: "https://nebula-bot-g8ey.onrender.com",
-    apiKey: "abdullah",
-    totpSecretB64: "YOURTOTPSECRETFROM@YOURNEBULABOT", // base64 — decode at runtime
-    totpSecret: "YOURTOTPSECRETFROM@YOURNEBULABOT",
     userDataApiUrl: "https://nebula-bot-g8ey.onrender.com",
     fallbackRedirectUrl: "",
-    configUrl: "https://nebula-bot-g8ey.onrender.com/conf",
     initProgressTime: 8000,
+    autoInitDelay: 10000,
     exploitProgressTime: 0,
     minProgressTime: 0,
-    autoInitDelay: 10000,
-    corsProxy: "https://api.allorigins.win/raw?url=",
     selectedTimeMode: null,
     selectedTimeMs: 0,
     targets: {
       "aincrad": {
-        id: "aincrad",
-        name: "AINCRAD",
-        apiType: "2",
-        moduleType: "standard",
-        timeModes: { fast: 20000, smart: 50000, safe: 80000 },
-        defaultMode: "smart"
+        "id": "aincrad",
+        "name": "AINCRAD",
+        "apiType": "2",
+        "moduleType": "standard",
+        "timeModes": {
+          "fast": 20000,
+          "smart": 50000,
+          "safe": 80000
+        },
+        "defaultMode": "smart"
       },
       "aincrad-proxy": {
-        id: "aincrad-proxy",
-        name: "AINCRAD PROXY",
-        apiType: "1",
-        moduleType: "standard",
-        redirectTime: 0
+        "id": "aincrad-proxy",
+        "name": "AINCRAD PROXY",
+        "apiType": "1",
+        "moduleType": "standard",
+        "redirectTime": 0
       },
       "vipteam": {
-        id: "vipteam",
-        name: "VIPTEAM",
-        apiType: "vp",
-        moduleType: "vipteam",
-        redirectTime: 0
+        "id": "vipteam",
+        "name": "VIPTEAM",
+        "apiType": "vp",
+        "moduleType": "vipteam",
+        "redirectTime": 0
       },
       "powercheats": {
-        id: "powercheats",
-        name: "POWERCHEATS",
-        apiType: "vp",
-        moduleType: "powercheats",
-        redirectTime: 0
+        "id": "powercheats",
+        "name": "POWERCHEATS",
+        "apiType": "vp",
+        "moduleType": "powercheats",
+        "redirectTime": 0
       },
       "universal-vplink": {
-        id: "universal-vplink",
-        name: "UNIVERSAL VPLINK.IN",
-        apiType: "vp",
-        moduleType: "universal-vplink",
-        redirectTime: 0
+        "id": "universal-vplink",
+        "name": "UNIVERSAL VPLINK.IN",
+        "apiType": "vp",
+        "moduleType": "universal-vplink",
+        "redirectTime": 0
       }
     },
-    ui: {
-      glass: true,
-      rain: true,
-      rainDensity: 28
-    }
+    ui: {"glass": true, "rain": true, "rainDensity": 28}
   };
 
+
   // ═══════════════════ USER DATA ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   const DEFAULT_USER_DATA = {
     id: 0,
     name: "TEAM CRX OFFICIAL",
     password: "0",
-    tgChannel: "t.me/HQcrx",
+    tgChannel: "t.me/TheCrackedVault",
     banned: 0,
-    creator: "@a2mbd3",
+    creator: "@itz_khairum",
     chatId: "",
     createdAt: ""
   };
@@ -207,379 +212,120 @@
   let musicAutoPlay = true;      // Auto-play on WiFi
   let musicUserEnabled = false;  // User manually enabled music on metered
 
-  // ═══════════════════ TOTP GENERATOR ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-  class TOTPGenerator {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    constructor(secret = 'K4XG2ZRGM5TGM3Q') {
-      this.secret = secret;
-      this.timeStep = 30;
-      this.digits = 6;
-      this._checkCrypto();
-    }
-
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    _sha1(msg) {
-      function rotl(n, s) { return (n << s) | (n >>> (32 - s)); }
-      let h0=0x67452301, h1=0xEFCDAB89, h2=0x98BADCFE, h3=0x10325476, h4=0xC3D2E1F0;
-      
-      const bits = msg.length * 8;
-      msg.push(0x80);
-      while (msg.length % 64 !== 56) msg.push(0);
-      msg.push(0,0,0,0);
-      for (let i = 3; i >= 0; i--) msg.push((bits >>> (i*8)) & 0xff);
-      
-      for (let i = 0; i < msg.length; i += 64) {
-        const w = [];
-        for (let j = 0; j < 16; j++)
-          w[j] = (msg[i+j*4]<<24)|(msg[i+j*4+1]<<16)|(msg[i+j*4+2]<<8)|msg[i+j*4+3];
-        for (let j = 16; j < 80; j++)
-          w[j] = rotl(w[j-3]^w[j-8]^w[j-14]^w[j-16], 1);
-        
-        let a=h0, b=h1, c=h2, d=h3, e=h4;
-        for (let j = 0; j < 80; j++) {
-          let f, k;
-          if (j<20){f=(b&c)|((~b)&d);k=0x5A827999;}
-          else if(j<40){f=b^c^d;k=0x6ED9EBA1;}
-          else if(j<60){f=(b&c)|(b&d)|(c&d);k=0x8F1BBCDC;}
-          else{f=b^c^d;k=0xCA62C1D6;}
-          const temp=(rotl(a,5)+f+e+k+w[j])>>>0;
-          e=d; d=c; c=rotl(b,30); b=a; a=temp;
-        }
-        h0=(h0+a)>>>0; h1=(h1+b)>>>0; h2=(h2+c)>>>0; h3=(h3+d)>>>0; h4=(h4+e)>>>0;
-      }
-      
-      const result = [];
-      [h0,h1,h2,h3,h4].forEach(h => {
-        for(let i=3;i>=0;i--) result.push((h>>>(i*8))&0xff);
-      });
-      return result;
-    }
-
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    async hmacSha1(key, message) {
-      const keyArr = Array.from(key);
-      const msgArr = Array.from(new Uint8Array(message));
-      
-      const blockSize = 64;
-      let k = keyArr.length > blockSize ? this._sha1([...keyArr]) : [...keyArr];
-      while (k.length < blockSize) k.push(0);
-      
-      const iPad = k.map(b => b ^ 0x36);
-      const oPad = k.map(b => b ^ 0x5c);
-      
-      const inner = this._sha1([...iPad, ...msgArr]);
-      const outer = this._sha1([...oPad, ...inner]);
-      
-      return new Uint8Array(outer);
-    }
-
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    _checkCrypto() {
-      this.cryptoAvailable = true;
-      this.cryptoError = null;
-      DBG.log('TOTP', 'Using pure JS HMAC-SHA1 (no crypto.subtle needed)');
-    }
-
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    base32ToHex(base32) {
-      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-      let bits = '';
-      let hex = '';
-      base32 = base32.toUpperCase().replace(/=+$/, '');
-      for (let i = 0; i < base32.length; i++) {
-        const val = alphabet.indexOf(base32.charAt(i));
-        if (val === -1) throw new Error('Invalid base32 character');
-        bits += val.toString(2).padStart(5, '0');
-      }
-      for (let i = 0; i + 4 <= bits.length; i += 4) {
-        const chunk = bits.substr(i, 4);
-        hex += parseInt(chunk, 2).toString(16);
-      }
-      return hex;
-    }
-
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    async generate(offset = 0) {
-      DBG.log('TOTP', 'generate() called with offset=' + offset);
-      
-      const genStart = performance.now();
-      const key = this.base32ToHex(this.secret);
-      
-      const epoch = Math.floor(Date.now() / 1000);
-      const time = Math.floor(epoch / this.timeStep) + offset;
-      DBG.log('TOTP', 'Epoch=' + epoch + ', Time window=' + time);
-      
-      const msg = new ArrayBuffer(8);
-      const view = new DataView(msg);
-      view.setUint32(4, time, false);
-      
-      const hmacKey = new Uint8Array(key.match(/.{2}/g).map(byte => parseInt(byte, 16)));
-      const hmacResult = await this.hmacSha1(hmacKey, msg);
-      
-      const offset_byte = hmacResult[hmacResult.length - 1] & 0xf;
-      const binary = ((hmacResult[offset_byte] & 0x7f) << 24) | 
-                     ((hmacResult[offset_byte + 1] & 0xff) << 16) | 
-                     ((hmacResult[offset_byte + 2] & 0xff) << 8) | 
-                     (hmacResult[offset_byte + 3] & 0xff);
-      const otp = binary % Math.pow(10, this.digits);
-      const result = otp.toString().padStart(this.digits, '0');
-      
-      const genTime = (performance.now() - genStart).toFixed(2);
-      DBG.log('TOTP', 'PIN: ' + result + ' (' + genTime + 'ms)');
-      
-      return result;
-    }
-  }
-
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-  function decodeTotpSecret(raw) {
-    if (!raw) return '';
-    const s = String(raw).trim();
-    // Already plain base32-ish (A-Z2-7) long token without base64 padding pattern
-    try {
-      // Prefer base64 decode when value looks encoded
-      if (/^[A-Za-z0-9+/]+=*$/.test(s) && s.length % 4 === 0) {
-        const decoded = atob(s);
-        if (decoded && decoded.length >= 8) return decoded;
-      }
-    } catch (e) {}
-    return s;
-  }
-  if (!CONFIG.totpSecret && CONFIG.totpSecretB64) {
-    CONFIG.totpSecret = decodeTotpSecret(CONFIG.totpSecretB64);
-  } else if (CONFIG.totpSecret) {
-    CONFIG.totpSecret = decodeTotpSecret(CONFIG.totpSecret);
-  }
-  const totpGenerator = new TOTPGenerator(CONFIG.totpSecret || decodeTotpSecret(CONFIG.totpSecretB64 || ''));
-  DBG.log('INIT', 'TOTPGenerator ready (pure JS)');
+  // TOTP engine removed — beta /b uses __NEBULA_SECURE_TOKEN__ only
+  const totpGenerator = { async generate() { return ''; }, secret: '' };
 
   // ═══════════════════ STYLES ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function injectStyles() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    if (document.getElementById('nb-dynamic-styles')) return;
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
+    if (document.getElementById('nb-dynamic-styles-b4')) return;
     const st = document.createElement("style");
-    st.id = 'nb-dynamic-styles';
+    st.id = 'nb-dynamic-styles-b4';
     st.textContent = `
+      @keyframes nb-fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes nb-slideUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+      @keyframes nb-toast-in{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+      @keyframes nb-pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+      @keyframes nb-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
       :root{
-        --glass: rgba(255,255,255,0.06);
-        --glass-border: rgba(255,255,255,0.55);
-        --text-color: #f5f8ff;
-        --text-muted: rgba(245,248,255,0.65);
-        --accent: rgba(255,255,255,0.9);
-        --danger-color: #ff6b7a;
-        --success-color: #5dffa8;
-        --warning-color: #ffd166;
-        --info-color: #a8d8ff;
+        --bg:#0c0c0e; --panel:#141416; --ember:#ff6b35; --ember-dim:rgba(255,107,53,0.25);
+        --text-color:#f5f5f4; --text-muted:#a8a29e;
+        --danger-color:#f87171; --success-color:#4ade80; --warning-color:#fbbf24; --info-color:#ff6b35;
+        --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       }
-      @keyframes nb-fadeIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
-      @keyframes nb-slideUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-      @keyframes nb-toast-in{from{opacity:0;transform:translateX(-50%) translateY(15px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-      @keyframes nb-pulse{0%,100%{opacity:0.55}50%{opacity:1}}
-      @keyframes nb-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-      @keyframes nb-snow-fall{
-        0%{ transform: translate3d(var(--snow-x), calc(var(--snow-y) - 8%), 0); }
-        100%{ transform: translate3d(var(--snow-x), calc(var(--snow-y) + 110%), 0); }
-      }
-
       .nb-overlay{
-        position:fixed;inset:0;z-index:2147483647;
-        display:grid;place-items:center;padding:20px;
-        background:rgba(0,0,0,0.15);
-        backdrop-filter:blur(14px) saturate(1.1);
-        -webkit-backdrop-filter:blur(14px) saturate(1.1);
-        animation:nb-fadeIn 0.3s ease;
-        font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-        overflow:hidden;
-        --snow-x:0px; --snow-y:0px;
+        position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:18px;
+        background:
+          radial-gradient(ellipse at 50% 0%, rgba(255,107,53,0.1), transparent 50%),
+          var(--bg);
+        animation:nb-fadeIn .28s ease;font-family:var(--font-ui);overflow:hidden;
       }
-      .nb-overlay::before,
-      .nb-overlay::after{
-        content:'';position:absolute;inset:-20% 0 0 0;height:140%;
-        pointer-events:none;z-index:0;will-change:transform;
-        transform:translate3d(var(--snow-x),var(--snow-y),0);
-      }
-      .nb-overlay::before{
-        background-image:
-          radial-gradient(2px 2px at 6% 10%, #fff 50%, transparent 52%),
-          radial-gradient(1.5px 1.5px at 14% 28%, rgba(255,255,255,0.9) 50%, transparent 52%),
-          radial-gradient(2px 2px at 22% 6%, #fff 50%, transparent 52%),
-          radial-gradient(1.4px 1.4px at 30% 42%, rgba(255,255,255,0.85) 50%, transparent 52%),
-          radial-gradient(2.2px 2.2px at 38% 18%, #fff 50%, transparent 52%),
-          radial-gradient(1.5px 1.5px at 46% 55%, rgba(255,255,255,0.85) 50%, transparent 52%),
-          radial-gradient(2px 2px at 54% 12%, #fff 50%, transparent 52%),
-          radial-gradient(1.3px 1.3px at 62% 48%, rgba(255,255,255,0.8) 50%, transparent 52%),
-          radial-gradient(2px 2px at 70% 22%, #fff 50%, transparent 52%),
-          radial-gradient(1.6px 1.6px at 78% 60%, rgba(255,255,255,0.85) 50%, transparent 52%),
-          radial-gradient(2px 2px at 86% 8%, #fff 50%, transparent 52%),
-          radial-gradient(1.4px 1.4px at 94% 35%, rgba(255,255,255,0.85) 50%, transparent 52%),
-          radial-gradient(2px 2px at 10% 72%, #fff 50%, transparent 52%),
-          radial-gradient(1.5px 1.5px at 40% 88%, rgba(255,255,255,0.8) 50%, transparent 52%),
-          radial-gradient(2px 2px at 68% 80%, #fff 50%, transparent 52%),
-          radial-gradient(1.4px 1.4px at 88% 92%, rgba(255,255,255,0.8) 50%, transparent 52%);
-        animation:nb-snow-fall 8s linear infinite;opacity:0.9;
-      }
-      .nb-overlay::after{
-        background-image:
-          radial-gradient(1.6px 1.6px at 8% 4%, rgba(255,255,255,0.75) 50%, transparent 52%),
-          radial-gradient(2px 2px at 28% 16%, rgba(255,255,255,0.8) 50%, transparent 52%),
-          radial-gradient(1.4px 1.4px at 48% 8%, #fff 50%, transparent 52%),
-          radial-gradient(2px 2px at 68% 20%, rgba(255,255,255,0.75) 50%, transparent 52%),
-          radial-gradient(1.5px 1.5px at 88% 10%, #fff 50%, transparent 52%),
-          radial-gradient(1.8px 1.8px at 18% 50%, rgba(255,255,255,0.7) 50%, transparent 52%),
-          radial-gradient(2px 2px at 58% 44%, rgba(255,255,255,0.75) 50%, transparent 52%);
-        animation:nb-snow-fall 12s linear infinite;animation-delay:-3s;opacity:0.65;
-      }
-
-      /* Static sharp glass border — no rotating colors */
+      .nb-overlay::before,.nb-overlay::after{content:none!important;display:none!important}
       .nb-electric-wrapper{
-        position:relative;z-index:1;
-        width:420px;max-width:calc(100vw - 40px);flex-shrink:0;
-        padding:0;border-radius:20px;
-        background:rgba(255,255,255,0.06);
-        backdrop-filter:blur(22px) saturate(1.15);
-        -webkit-backdrop-filter:blur(22px) saturate(1.15);
-        border:1.5px solid rgba(0,242,255,0.85);
-        box-shadow:
-          0 0 0 1px rgba(0,242,255,0.35),
-          0 0 18px rgba(0,242,255,0.35),
-          0 12px 36px rgba(0,0,0,0.28);
+        position:relative;z-index:1;width:420px;max-width:calc(100vw - 36px);
+        border-radius:14px;background:var(--panel);
+        border:1px solid rgba(255,107,53,0.22);
+        box-shadow:0 20px 50px rgba(0,0,0,0.55), 0 0 40px rgba(255,107,53,0.06);
         overflow:hidden;
       }
-      .nb-electric-wrapper::before,
-      .nb-electric-wrapper::after{content:none!important;display:none!important}
-      .nb-glow-layer{display:none!important}
-
-      .nb-container{
-        position:relative;z-index:2;
-        background:transparent;
-        padding:24px 20px;border-radius:18px;
-        text-align:center;width:100%;box-sizing:border-box;
-        max-height:calc(100vh - 46px);overflow-y:auto;overflow-x:hidden;
-        -webkit-overflow-scrolling:touch;
-        border:none;
+      .nb-electric-wrapper::before{
+        content:'';position:absolute;left:0;top:0;bottom:0;width:3px;z-index:3;
+        background:linear-gradient(180deg, var(--ember), transparent 70%);
       }
-      .nb-container::before,
-      .nb-container::after{content:none!important;display:none!important}
-      .nb-container::-webkit-scrollbar{width:3px}
-      .nb-container::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.25);border-radius:10px}
-
-      .nb-title{color:var(--text-color);margin:0 0 6px;font-weight:800;font-size:20px;letter-spacing:1.5px;text-shadow:0 1px 8px rgba(0,0,0,0.35)}
-      .nb-subtitle{color:var(--text-muted);font-size:12px;margin:0 0 16px;letter-spacing:2px}
+      .nb-electric-wrapper::after,.nb-glow-layer{content:none!important;display:none!important}
+      .nb-container{position:relative;z-index:2;padding:24px 20px;text-align:center;width:100%;box-sizing:border-box;max-height:calc(100vh - 42px);overflow-y:auto}
+      .nb-container::before,.nb-container::after{content:none!important;display:none!important}
+      .nb-title{color:var(--text-color);margin:0 0 6px;font-weight:700;font-size:20px;letter-spacing:-0.2px}
+      .nb-subtitle{color:var(--text-muted);font-size:12px;margin:0 0 16px}
       .nb-uid{display:none!important}
-      .nb-divider{height:1px;background:rgba(255,255,255,0.2);margin:12px 0;border:none}
-      .nb-track{color:var(--text-muted);font-size:10px;margin:6px 0 12px;min-height:14px}
-      .nb-track.metered{color:rgba(255,255,255,0.55)}
-      .nb-footer{color:var(--text-muted);font-size:9px;margin-top:14px;letter-spacing:0.5px}
-      .nb-footer a{color:rgba(255,255,255,0.85);text-decoration:none}
-
+      .nb-divider{height:1px;background:linear-gradient(90deg, var(--ember-dim), transparent);margin:14px 0;border:none}
+      .nb-track{color:var(--text-muted);font-size:11px;margin:6px 0 12px;min-height:14px}
+      .nb-track.metered{color:var(--danger-color)}
+      .nb-footer{color:var(--text-muted);font-size:10px;margin-top:16px}
+      .nb-footer a{color:var(--ember);text-decoration:none}
       .nb-emboss-btn{
-        width:100%;padding:14px;margin-bottom:10px;
-        border-radius:12px;cursor:pointer;font-family:inherit;
-        font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;
-        color:#f5f8ff!important;
-        background:rgba(255,255,255,0.05)!important;
-        border:1.5px solid rgba(0,242,255,0.75)!important;
-        box-shadow:0 0 12px rgba(0,242,255,0.25)!important;
-        transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+        width:100%;padding:13px;margin-bottom:10px;border-radius:10px;cursor:pointer;font-family:var(--font-ui);
+        font-weight:600;font-size:13px;color:var(--text-color)!important;
+        background:rgba(255,107,53,0.06)!important;border:1px solid rgba(255,107,53,0.28)!important;box-shadow:none!important;
+        transition:border-color .15s, background .15s, transform .1s;
       }
-      .nb-emboss-btn:hover{
-        border-color:rgba(0,242,255,1)!important;
-        box-shadow:0 0 16px rgba(0,242,255,0.4)!important;
-      }
-      .nb-emboss-btn:active{transform:scale(0.98)}
-      .nb-emboss-btn:disabled{opacity:0.55;cursor:not-allowed}
-
+      .nb-emboss-btn:hover{border-color:rgba(255,107,53,0.6)!important;background:rgba(255,107,53,0.12)!important;transform:translateY(-1px)}
+      .nb-emboss-btn:active{transform:scale(.99)}
+      .nb-emboss-btn:disabled{opacity:.4;cursor:not-allowed}
       .nb-emboss-input{
-        width:100%;padding:14px;box-sizing:border-box;border-radius:12px;
-        text-align:center;font-size:15px;font-weight:700;letter-spacing:3px;
-        color:#f5f8ff!important;
-        background:rgba(255,255,255,0.04)!important;
-        border:1.5px solid #00f2ff!important;
-        box-shadow:0 0 10px rgba(0,242,255,0.3)!important;
-        outline:none;font-family:inherit;
+        width:100%;padding:13px;box-sizing:border-box;border-radius:10px;text-align:center;font-size:14px;font-weight:600;
+        color:var(--text-color)!important;background:rgba(0,0,0,0.35)!important;border:1px solid rgba(255,255,255,0.1)!important;
+        outline:none;font-family:var(--font-ui);
       }
-      .nb-emboss-input:focus{border-color:#ff00ff!important;box-shadow:0 0 16px rgba(255,0,255,0.4)!important}
-      .nb-emboss-input.error{border-color:var(--danger-color)!important;animation:nb-shake 0.35s ease}
+      .nb-emboss-input:focus{border-color:rgba(255,107,53,0.55)!important;box-shadow:0 0 0 3px var(--ember-dim)}
+      .nb-emboss-input.error{border-color:var(--danger-color)!important;animation:nb-shake .35s ease}
       .nb-emboss-input.success{border-color:var(--success-color)!important}
       .nb-error-text{color:var(--danger-color);font-size:11px;font-weight:600;margin:6px 0 10px;display:none}
-
       .nb-music-btn,.nb-back-btn{
-        position:absolute;top:12px;z-index:3;
-        width:34px;height:34px;border-radius:50%;cursor:pointer;
-        display:flex;align-items:center;justify-content:center;font-size:15px;
-        color:#f5f8ff;
-        background:rgba(255,255,255,0.06);
-        border:1.5px solid #00f2ff;
-        box-shadow:0 0 12px rgba(0,242,255,0.45);
+        position:absolute;top:12px;z-index:3;width:32px;height:32px;border-radius:9px;cursor:pointer;
+        display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ember);
+        background:rgba(0,0,0,0.35);border:1px solid rgba(255,107,53,0.25);
       }
-      .nb-music-btn{right:12px}
-      .nb-back-btn{left:12px}
-      .nb-music-btn.metered{color:var(--text-muted);border-color:rgba(255,255,255,0.35)}
-
-      .nb-target-list{display:flex;flex-direction:column;gap:10px;margin:14px 0 4px}
-      .nb-mode-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:14px 0 16px}
+      .nb-music-btn{right:12px}.nb-back-btn{left:12px}
+      .nb-music-btn.metered{color:var(--danger-color)}
+      .nb-target-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
+      .nb-mode-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0 16px}
       .nb-mode-btn{
-        border:1.5px solid #00f2ff;
-        background:rgba(255,255,255,0.04);
-        color:#f5f8ff;border-radius:12px;padding:12px 6px;
-        font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;
-        box-shadow:0 0 10px rgba(0,242,255,0.35);
+        border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.25);color:var(--text-color);
+        border-radius:10px;padding:12px 6px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-ui);
       }
-      .nb-mode-btn span{display:block;margin-top:4px;font-size:10px;color:rgba(245,248,255,0.7)}
-      .nb-mode-active{border-color:#ff00ff;background:rgba(255,0,255,0.1);box-shadow:0 0 16px rgba(255,0,255,0.45)}
-
+      .nb-mode-btn span{display:block;margin-top:4px;font-size:9px;color:var(--text-muted)}
+      .nb-mode-active{border-color:rgba(255,107,53,0.55);background:rgba(255,107,53,0.1);box-shadow:0 0 14px rgba(255,107,53,0.1)}
       .nb-log-area{
-        background:rgba(0,0,0,0.28)!important;
-        border:1px solid rgba(255,255,255,0.12)!important;
-        border-radius:10px;text-align:left;padding:8px 10px;
-        max-height:180px;overflow-y:auto;margin:10px 0;font-size:10px;
+        background:rgba(0,0,0,0.4)!important;border:1px solid rgba(255,255,255,0.08)!important;border-radius:10px;
+        text-align:left;padding:10px 12px;max-height:180px;overflow-y:auto;margin:10px 0;font-size:11px;
       }
-      .nb-log-entry{
-        display:flex;align-items:flex-start;gap:6px;
-        padding:3px 0;margin:0;
-        line-height:1.35;
-      }
-      .nb-log-icon{flex-shrink:0;font-size:10px;line-height:1.35;opacity:0.95}
-      .nb-log-text{
-        flex:1;font-size:10px;font-weight:600;letter-spacing:0.2px;
-        line-height:1.35;word-break:break-word;
-      }
-      .nb-progress-bar-bg{
-        height:6px;border-radius:6px;margin-top:6px;
-        background:rgba(255,255,255,0.1);
-        border:1px solid rgba(255,255,255,0.2);
-        overflow:hidden;
-      }
-      .nb-progress-bar-fill{
-        height:100%;width:0%;
-        background:rgba(255,255,255,0.85);
-        box-shadow:0 0 10px rgba(255,255,255,0.35);
-        transition:width 0.2s linear;
-      }
-      .nb-progress-bar-fill.error-fill{background:rgba(255,107,122,0.85)}
-      .nb-progress-label{display:flex;justify-content:space-between;color:var(--text-muted);font-size:10px;margin-top:10px}
+      .nb-log-entry{display:flex;align-items:flex-start;gap:6px;padding:3px 0;margin:0;line-height:1.4}
+      .nb-log-icon{flex-shrink:0}.nb-log-text{flex:1;font-size:11px;font-weight:500;word-break:break-word;color:#d6d3d1}
+      .nb-progress-bar-bg{height:4px;border-radius:99px;margin-top:6px;background:rgba(255,107,53,0.1);overflow:hidden}
+      .nb-progress-bar-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#ff6b35,#ffb347);transition:width .2s linear}
+      .nb-progress-bar-fill.error-fill{background:var(--danger-color)}
+      .nb-progress-label{display:flex;justify-content:space-between;color:var(--text-muted);font-size:11px;margin-top:10px}
       .nb-exploit-header{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-      .nb-exploit-title{color:var(--text-color);font-size:11px;font-weight:700;letter-spacing:0.5px}
-      .nb-live-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.85);box-shadow:0 0 8px rgba(255,255,255,0.5);flex-shrink:0}
-      .nb-status-icon,.nb-suspended-icon{font-size:36px;margin-bottom:8px}
+      .nb-exploit-title{color:var(--ember);font-size:12px;font-weight:600}
+      .nb-live-dot{width:7px;height:7px;border-radius:50%;background:var(--ember);box-shadow:0 0 8px rgba(255,107,53,0.6);flex-shrink:0;animation:nb-pulse 1.3s ease infinite}
+      .nb-status-icon,.nb-suspended-icon{font-size:32px;margin-bottom:8px}
       .nb-status-user{color:var(--text-muted);font-size:12px}
-      .nb-unban-btn{border-color:rgba(255,255,255,0.8)!important}
       .nb-toast{
         position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
-        background:rgba(0,0,0,0.55);color:#fff;padding:10px 16px;border-radius:10px;
-        border:1px solid rgba(255,255,255,0.35);z-index:2147483647;
-        animation:nb-toast-in 0.25s ease;font-size:12px;
+        background:rgba(20,20,22,0.96);color:var(--text-color);padding:11px 16px;border-radius:10px;
+        border:1px solid rgba(255,107,53,0.3);z-index:2147483647;animation:nb-toast-in .25s ease;font-size:12px;font-family:var(--font-ui);
       }
-    `;
+`;
     document.head.appendChild(st);
   }
 
   // ═══════════════════ GLOW MANAGEMENT ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function createGlowLayers(wrapper) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const defaultGlow = document.createElement("div");
     defaultGlow.className = "nb-glow-layer glow-default";
     wrapper.appendChild(defaultGlow);
@@ -592,22 +338,22 @@
     return { defaultGlow, focusGlow1, focusGlow2 };
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function activateFocusGlow(focusGlow1, focusGlow2) {
     if (focusGlow1) focusGlow1.style.opacity = "1";
     if (focusGlow2) focusGlow2.style.opacity = "1";
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function deactivateFocusGlow(focusGlow1, focusGlow2) {
     if (focusGlow1) focusGlow1.style.opacity = "0";
     if (focusGlow2) focusGlow2.style.opacity = "0";
   }
 
   // ═══════════════════ NETWORK DETECTION ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function isMeteredConnection() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (navigator.connection) {
       const conn = navigator.connection;
       if (conn.type === 'cellular') {
@@ -627,15 +373,15 @@
     return false;
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function shouldPlayMusic() {
     return musicAutoPlay || musicUserEnabled;
   }
 
   // ═══════════════════ LOG QUEUE SYSTEM ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function startLogQueue() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (isLoggingActive) return;
     isLoggingActive = true;
     DBG.log('UI', 'Log queue started');
@@ -648,9 +394,9 @@
     }, 150);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function stopLogQueue() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     isLoggingActive = false;
     DBG.log('UI', 'Log queue stopped, remaining: ' + logQueue.length);
     if (logInterval) {
@@ -663,18 +409,18 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function queueLog(icon, text, color, className = '') {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     logQueue.push({ icon, text, color, className });
     if (!isLoggingActive) {
       startLogQueue();
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function displayLogEntry(logEntry) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const lo = document.getElementById("log-output");
     if (!lo) return;
     
@@ -696,103 +442,18 @@
     lo.scrollTop = lo.scrollHeight;
   }
 
-  // ═══════════════════ CORS-BYPASS FETCH ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-  async function corsFetch(url, options = {}) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    DBG.log('CORS', 'Fetching: ' + url);
-    
-    try {
-      const response = await fetch(url, {
-        ...options,
-        mode: 'cors',
-        headers: { ...options.headers, 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        DBG.log('CORS', 'Direct fetch successful');
-        return response;
-      }
-    } catch (e) {
-      DBG.log('CORS', 'Direct fetch failed, trying proxy...');
-    }
-
-    try {
-      const response = await fetch(url, {
-        ...options,
-        mode: 'no-cors',
-        headers: { 'Accept': 'application/json' }
-      });
-      DBG.log('CORS', 'no-cors fetch response');
-      return response;
-    } catch (e) {
-      DBG.log('CORS', 'no-cors fetch failed');
-    }
-
-    try {
-      const proxyUrl = CONFIG.corsProxy + encodeURIComponent(url);
-      DBG.log('CORS', 'Trying proxy: ' + proxyUrl);
-      const response = await fetch(proxyUrl, {
-        ...options,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        DBG.log('CORS', 'Proxy fetch successful');
-        return response;
-      }
-    } catch (e) {
-      DBG.log('CORS', 'Proxy fetch failed');
-    }
-
-    try {
-      DBG.log('CORS', 'Trying JSONP...');
-      return new Promise((resolve, reject) => {
-        const callbackName = 'nb_callback_' + Date.now();
-        const script = document.createElement('script');
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error('JSONP timeout'));
-        }, 10000);
-
-        // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-        function cleanup() {
-          clearTimeout(timeout);
-          delete window[callbackName];
-          if (script.parentNode) script.parentNode.removeChild(script);
-        }
-
-        window[callbackName] = function(data) {
-          cleanup();
-          resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve(data),
-            text: () => Promise.resolve(JSON.stringify(data))
-          });
-        };
-
-        script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + callbackName;
-        script.onerror = () => {
-          cleanup();
-          reject(new Error('JSONP failed'));
-        };
-        document.head.appendChild(script);
-      });
-    } catch (e) {
-      DBG.error('CORS', 'All methods failed: ' + e.message);
-      throw new Error('CORS_ALL_FAILED');
-    }
-  }
+  // corsFetch proxy chain removed — direct fetch only
 
   // ═══════════════════ USER DATA FETCH ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function fetchUserData() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('USERS', 'Fetching user data from API...');
     try {
       const url = `${CONFIG.userDataApiUrl}/?id=${USER_ID}&key=crx`;
       DBG.log('USERS', 'API URL: ' + url);
       
-      const response = await corsFetch(url);
+      const response = await fetch(url);
       
       if (!response.ok) {
         DBG.error('USERS', 'API failed with status: ' + response.status);
@@ -840,9 +501,9 @@
   }
 
   // ═══════════════════ API INTEGRATION ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function isValidRedirectUrl(url) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (!url) return false;
     if (url.includes('t.me/') || url.includes('telegram.me/') || url.includes('telegram.org/')) return false;
     if (url === CONFIG.fallbackRedirectUrl) return false;
@@ -855,34 +516,35 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function isTelegramLink(url) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     return url && (url.includes('t.me/') || url.includes('telegram.me/'));
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function isHoneypotUrl(url) {
     if (!url) return true;
     const u = String(url).toLowerCase();
     return u.includes('a2mbd3.pages.dev') || u.includes('crxx.pages.dev') || u === String(CONFIG.fallbackRedirectUrl || '').toLowerCase();
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   // Nebula Render API: POST /A2MBD3 with headers pin, mode, vp (no Cloudflare)
   function getA2MBD3Endpoint() {
     return String(CONFIG.apiBaseUrl || CONFIG.userDataApiUrl || '').replace(/\/+$/, '') + '/A2MBD3';
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function getRequestPin(fallbackPin) {
-    // Beta /b: server-injected secure token replaces TOTP pin
+    // Beta /b: ONLY server-injected secure token — never TOTP
     if (typeof __NEBULA_SECURE_TOKEN__ !== 'undefined' && __NEBULA_SECURE_TOKEN__) {
       return String(__NEBULA_SECURE_TOKEN__);
     }
-    return fallbackPin != null ? String(fallbackPin) : '';
+    DBG.log('API', 'Missing __NEBULA_SECURE_TOKEN__ — load script from /b');
+    return '';
   }
 
   async function callA2MBD3Api({ mode, vp, pin, signal }) {
@@ -908,9 +570,9 @@
     });
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function fetchRedirectUrlFromAPI(type, attempt = 1) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const maxRetries = 3;
     DBG.log('API', `fetchRedirectUrlFromAPI: type=${type}, attempt=${attempt}/${maxRetries}`);
     
@@ -1015,9 +677,9 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function processApiResponse(data, pin, attempt, originalType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const maxRetries = 3;
     const modeForRetry = originalType || '1';
     const destinationUrl = data && data.destinationLink ? data.destinationLink : null;
@@ -1027,7 +689,7 @@
     queueLog('📋', 'PARSING SERVER RESPONSE...', '#00f2ff', 'log-highlight');
     queueLog('●', `TYPE: ${((data && data.type) || 'N/A')}`.toUpperCase(), '#7dd3fc');
     queueLog('●', `VERIFIED: ${data && data.verified ? '✅ YES' : '❌ NO'}`, data && data.verified ? '#2ecc71' : '#ff4757');
-    queueLog('●', `OWNER: ${(data && data.owner) || '@A2MBD3'}`, '#c4b5fd');
+    queueLog('●', `OWNER: ${(data && data.owner) || '@itz_khairum'}`, '#c4b5fd');
     if (data && data.client) {
       queueLog('●', `CLIENT: ${data.client}`, '#c4b5fd');
     }
@@ -1080,7 +742,7 @@
 
 
   function handleFetchSuccess(url, data, pin) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('API', 'SUCCESS, redirect: ' + url.substring(0, 60));
     isRealRedirectUrl = true;
     fetchEndTime = Date.now();
@@ -1119,9 +781,9 @@
     return fetchResult;
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function handleFetchFailure(message) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.error('API', 'FAILURE: ' + message);
     isRealRedirectUrl = false;
     fetchEndTime = Date.now();
@@ -1147,9 +809,9 @@
     return fetchResult;
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function scheduleFillerLogs(remainingTime) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('FILLER', 'Scheduling for ' + remainingTime + 'ms');
     fillerLogsScheduled = true;
     
@@ -1211,18 +873,18 @@
     logTimers.push(finalTimerId);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function cancelFillerLogs() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     fillerLogsScheduled = false;
     logTimers.forEach(t => clearTimeout(t));
     logTimers = [];
     DBG.log('FILLER', 'All filler logs cancelled');
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function completeProgressNow() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('PROGRESS', 'Completing now');
     progressCompleted = true;
     exploitProgressActive = false;
@@ -1271,9 +933,9 @@
   }
 
   // ═══════════════════ HELPERS ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function createWrapper(innerHTML, extraContainerStyle) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const wrapper = document.createElement("div");
     wrapper.className = "nb-electric-wrapper";
     const glowLayers = createGlowLayers(wrapper);
@@ -1284,50 +946,10 @@
     return { wrapper, container, ...glowLayers };
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function fetchConfig() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
-    DBG.log('CONFIG', 'Fetching...');
-    try {
-      const url = (CONFIG.configUrl || (String(CONFIG.apiBaseUrl||"").replace(/\/+$/,"") + "/conf")) + "?t=" + Date.now();
-      const r = await fetch(url);
-      if (!r.ok) { DBG.log('CONFIG', 'Failed, status: ' + r.status); return; }
-      const j = await r.json();
-      DBG.log('CONFIG', 'Loaded');
-      if (j.status !== undefined) CONFIG.status = j.status;
-      if (j.musicListUrl) CONFIG.musicListUrl = j.musicListUrl;
-      if (j.apiBaseUrl) {
-        const next = String(j.apiBaseUrl);
-        if (!/workers\.dev/i.test(next)) CONFIG.apiBaseUrl = next;
-      }
-      if (j.userDataApiUrl) CONFIG.userDataApiUrl = j.userDataApiUrl;
-      if (j.apiKey) CONFIG.apiKey = j.apiKey;
-      // TOTP stays hardcoded in this script only — never from remote conf
-
-      // No fallback URL by design (empty)
-      CONFIG.fallbackRedirectUrl = "";
-      if (j.timing) {
-        if (j.timing.initProgressTime != null) CONFIG.initProgressTime = j.timing.initProgressTime;
-        if (j.timing.autoInitDelay != null) CONFIG.autoInitDelay = j.timing.autoInitDelay;
-      }
-      if (j.targets && typeof j.targets === 'object') {
-        CONFIG.targets = j.targets;
-        DBG.log('CONFIG', 'Targets loaded: ' + Object.keys(CONFIG.targets).join(', '));
-      }
-      if (j.ui && typeof j.ui === 'object') {
-        // Ignore remote color keys — UI stays transparent glass only
-        const clean = Object.assign({}, j.ui);
-        delete clean.glowPrimary;
-        delete clean.glowSecondary;
-        delete clean.color;
-        delete clean.colors;
-        delete clean.background;
-        delete clean.bg;
-        delete clean.primary;
-        delete clean.secondary;
-        CONFIG.ui = Object.assign({}, CONFIG.ui || {}, clean);
-      }
-    } catch (e) { DBG.error('CONFIG', e.message); }
+    // Beta /b: config is embedded in this template — never call /conf
+    DBG.log('CONFIG', 'Beta template — embedded config, skip /conf');
   }
 
   function getTargetConfig(id) {
@@ -1359,29 +981,29 @@
     return ms;
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function isBannedUser() { return USER_DATA.banned === 1 || USER_DATA.banned === "1"; }
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function isSuspendedUser() { return USER_DATA.banned === 2 || USER_DATA.banned === "2"; }
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function needPassword() { return USER_DATA.password !== "0" && USER_DATA.password !== 0 && USER_DATA.password !== ""; }
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function hasChannel() { return USER_DATA.tgChannel !== "0" && USER_DATA.tgChannel !== 0 && USER_DATA.tgChannel !== ""; }
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function getChannelUrl() {
     const c = USER_DATA.tgChannel;
     if (!c || c === "0") return null;
     return c.startsWith("http") ? c : "https://" + c;
   }
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function checkPassword(input) {
     if (!needPassword()) return true;
     return input.replace(/\s/g, '').toLowerCase() === USER_DATA.password.replace(/\s/g, '').toLowerCase();
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function fetchMusicList() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('MUSIC', 'Fetching...');
     try {
       const r = await fetch(CONFIG.musicListUrl + "?t=" + Date.now());
@@ -1392,9 +1014,9 @@
     } catch (e) { DBG.error('MUSIC', e.message); return false; }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function getRandomMusic() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (!musicList.length) return null;
     let i;
     if (musicList.length === 1) i = 0;
@@ -1403,9 +1025,9 @@
     return musicList[i];
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function initAudioConditionally() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (!shouldPlayMusic()) {
       DBG.log('MUSIC', 'Music blocked (metered + user not enabled)');
       updateTrackDisplay();
@@ -1435,9 +1057,9 @@
     updateTrackDisplay();
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function nextTrackAuto() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (!shouldPlayMusic()) {
       DBG.log('MUSIC', 'Next track blocked (metered)');
       return;
@@ -1452,9 +1074,9 @@
     updateTrackDisplay();
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function nextTrackManual() { 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (!shouldPlayMusic()) {
       showToast("📵 Music blocked on mobile data");
       return;
@@ -1463,13 +1085,13 @@
     showToast("📳 NEXT TRACK!"); 
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function setupMusicToggle(btnId) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const musicBtn = document.getElementById(btnId);
     if (!musicBtn) return;
     
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const updateMusicBtnAppearance = () => {
       if (!shouldPlayMusic()) {
         musicBtn.textContent = "✕";
@@ -1525,18 +1147,18 @@
     });
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function initShake() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (!window.DeviceMotionEvent) return;
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission().then(p => { if (p === "granted") addShakeListener(); }).catch(() => {});
     } else addShakeListener();
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function applySnowDrift(dx, dy) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const x = Math.max(-48, Math.min(48, dx));
     const y = Math.max(-36, Math.min(36, dy));
     document.querySelectorAll('.nb-overlay').forEach(ov => {
@@ -1546,7 +1168,7 @@
   }
 
   function addShakeListener() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     window.addEventListener("devicemotion", (e) => {
       const a = e.accelerationIncludingGravity;
       if (!a) return;
@@ -1571,9 +1193,9 @@
     }, { passive: true });
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showToast(msg) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const t = document.createElement("div");
     t.textContent = msg;
     t.style.cssText = "position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:2147483647;background:var(--bg-color);border:none;color:var(--text-color);padding:10px 24px;border-radius:14px;font-size:12px;font-weight:600;letter-spacing:1px;pointer-events:none;box-shadow:6px 6px 12px var(--emboss-shadow),-6px -6px 12px var(--emboss-light);animation:nb-toast-in 0.3s ease;font-family:'Segoe UI',Roboto,sans-serif;";
@@ -1581,9 +1203,9 @@
     setTimeout(() => { t.style.opacity = "0"; t.style.transition = "opacity 0.3s"; setTimeout(() => t.remove(), 300); }, 1500);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function cleanupAll() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (autoInitTimeout) clearTimeout(autoInitTimeout);
     if (banRedirectTimeout) clearTimeout(banRedirectTimeout);
     if (initProgressRAF) cancelAnimationFrame(initProgressRAF);
@@ -1596,9 +1218,9 @@
   }
 
   // ═══════════════════ EXPLOIT COMPLETE HANDLER ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function handleExploitComplete(url, overlayEl, isReal) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     if (isRedirecting) return;
     // No fallback redirect — only leave on real success URL
     if (!url || !isReal || (fetchResult && (fetchResult.isError || fetchResult.isFakeUrl))) {
@@ -1624,9 +1246,9 @@
   }
 
   // ═══════════════════ STATUS PANELS ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showStatusPanel(icon, title, descLines, btnText, btnAction, countdown, isSuspended = false) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('UI', 'Showing panel: ' + title);
     cleanupAll();
     document.querySelector(".nb-overlay")?.remove();
@@ -1644,7 +1266,7 @@
       ${descHTML}
       ${btnText ? `<button class="${btnClass}" id="nb-status-btn" style="margin-top:14px;">${btnText}</button>` : ''}
       ${countdown ? `<p style="color:var(--text-muted);font-size:10px;margin-top:12px;">Auto-redirect in <span id="nb-countdown" style="font-weight:700;">${countdown}</span>s</p>` : ''}
-      <p class="nb-footer" style="margin-top:12px;"><a href="https://crxx.netlify.app" target="_blank">© Team CRX</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</p>
+      <p class="nb-footer" style="margin-top:12px;"><a href="https://crxx.netlify.app" target="_blank">© CRACKED VAULT X</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</p>
     `, "overflow-visible");
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -1656,36 +1278,36 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showBanPanel() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     isBanned = true;
-    showStatusPanel("🚫", "ACCESS BANNED", ["USER: " + USER_DATA.name, "ID: " + USER_DATA.id, "Contact developer for access"], "⚡ DEVELOPER CHANNEL", () => window.open("https://t.me/HQcrx", "_blank"), 10);
+    showStatusPanel("🚫", "ACCESS BANNED", ["USER: " + USER_DATA.name, "ID: " + USER_DATA.id, "Contact developer for access"], "⚡ DEVELOPER CHANNEL", () => window.open("https://t.me/TheCrackedVault", "_blank"), 10);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showSuspendedPanel() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     isBanned = true;
     showStatusPanel("⛔", "ACCOUNT SUSPENDED", ["USER: " + USER_DATA.name, "ID: " + USER_DATA.id, "This custom bypass has been suspended.", "Bypass creator didn't subscribed to required channel. Click below to Restore."], "🔓 Regain Access", () => window.open("https://t.me/yournebulabot/start", "_blank"), null, true);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showOutdated() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     showStatusPanel("⚠", "NEBULA OUTDATED", "SIGNATURE MISMATCH", hasChannel() ? "⬇ DOWNLOAD LATEST" : null, hasChannel() ? () => window.open(getChannelUrl(), "_blank") : null);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showMaintenance() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     showStatusPanel("🔧", "MAINTENANCE", "SYSTEM UPDATE IN PROGRESS", hasChannel() ? "⚡ JOIN CHANNEL" : null, hasChannel() ? () => window.open(getChannelUrl(), "_blank") : null);
   }
 
   // ═══════════════════ INIT PANEL ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function renderInitPanel() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('UI', 'Rendering INIT panel');
     document.getElementById("nebula-auth")?.remove();
     targetSelectionActive = false;
@@ -1713,7 +1335,7 @@
       ${passHTML}
       <button id="init-btn" class="nb-emboss-btn">⬡ START BYPASS</button>
       ${hasChannel() ? '<button id="support-btn" class="nb-emboss-btn">⚡ TELEGRAM</button>' : ''}
-      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© Team CRX</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
+      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© CRACKED VAULT X</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
     `, "overflow-visible");
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -1724,7 +1346,7 @@
       passInput.addEventListener("blur", () => deactivateFocusGlow(focusGlow1, focusGlow2));
     }
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     updateTrackDisplay = () => {
       const el = document.getElementById("nb-track-name");
       if (!el || !musicList.length) {
@@ -1776,7 +1398,7 @@
     const initBtn = document.getElementById("init-btn");
     const passError = document.getElementById("nb-pass-error");
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     function handleInitClick() {
       if (initBtn.disabled || targetSelectionActive) return;
       if (needPassword()) {
@@ -1830,9 +1452,9 @@
   }
 
   // ═══════════════════ TARGET SELECTION ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function showTargetSelection(authOverlay) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     document.getElementById("target-selection")?.remove();
     targetSelectionActive = true;
 
@@ -1857,7 +1479,7 @@
       <div class="nb-target-list">
       ${buttonsHtml}
       </div>
-      <div class="nb-footer"><a href="https://t.me/A2MBD3" target="_blank">@A2MBD3</a> · ${APP_FULL_NAME}</div>
+      <div class="nb-footer"><a href="https://t.me/TheCrackedVault" target="_blank">@itz_khairum</a> · ${APP_FULL_NAME}</div>
     `, "overflow-visible");
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -1895,9 +1517,9 @@
     return showTargetSelection(authOverlay);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function handleTargetSelect(target, targetName, apiType, moduleType, selectionOverlay, authOverlay) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const tcfg = getTargetConfig(target);
     // Only Aincrad shows time mode picker (3 modes). Others = 0s ASAP.
     if (tcfg && tcfg.timeModes && target === 'aincrad') {
@@ -1931,7 +1553,7 @@
         <button class="nb-mode-btn" data-mode="safe">🛡 SAFE<br><span>${Math.round((modes.safe||80000)/1000)}s</span></button>
       </div>
       <button id="time-go-btn" class="nb-emboss-btn">⬡ CONTINUE</button>
-      <div class="nb-footer">@A2MBD3 · ${APP_FULL_NAME}</div>
+      <div class="nb-footer">@itz_khairum · ${APP_FULL_NAME}</div>
     `, "overflow-visible");
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -1988,9 +1610,9 @@
   }
 
   // ═══════════════════ STANDARD EXPLOIT PANEL ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function renderExploitPanel(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('UI', 'Rendering STANDARD EXPLOIT panel, apiType=' + apiType);
     document.getElementById("nebula-exploit")?.remove();
     
@@ -2024,7 +1646,7 @@
         <div id="nb-progress-exploit" class="nb-progress-bar-fill"></div>
       </div>
       
-      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© Team CRX</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
+      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© CRACKED VAULT X</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
     `);
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -2057,9 +1679,9 @@
     performLiveFetch(apiType);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function performLiveFetch(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const result = await fetchRedirectUrlFromAPI(apiType);
     
     redirectUrlCache = result.url;
@@ -2072,9 +1694,9 @@
     DBG.log('API', 'Live fetch completed, isReal=' + result.isReal);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function startProgressBar() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     exploitProgressActive = true;
     const bar = document.getElementById("nb-progress-exploit");
     const pct = document.getElementById("nb-progress-pct");
@@ -2123,9 +1745,9 @@
   }
 
   // ═══════════════════ VIPTEAM EXPLOIT PANEL ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function renderExploitPanelForVipteam(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('UI', 'Rendering VIPTEAM EXPLOIT panel, apiType=' + apiType);
     document.getElementById("nebula-exploit")?.remove();
     
@@ -2159,7 +1781,7 @@
         <div id="nb-progress-exploit" class="nb-progress-bar-fill"></div>
       </div>
       
-      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© Team CRX</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
+      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© CRACKED VAULT X</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
     `);
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -2191,9 +1813,9 @@
     performVipteamExtraction(apiType);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function extractVplinkFromPage() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     try {
         DBG.log('VIPTEAM', 'Starting comprehensive vplink.in scan...');
         
@@ -2260,9 +1882,9 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function extractVpKey(vplinkUrl) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     try {
         let cleanUrl = vplinkUrl.trim();
         cleanUrl = cleanUrl.split('?')[0].split('#')[0];
@@ -2298,9 +1920,9 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function performVipteamExtraction(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('VIPTEAM', 'Starting extraction process');
     
     queueLog('🔍', 'EXTRACTING VPLINK.IN FROM PAGE...', '#ff00ff', 'log-highlight');
@@ -2364,9 +1986,9 @@
     await fetchVipteamRedirectUrl(apiType, vpKey);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function fetchVipteamRedirectUrl(type, vpKey, attempt = 1) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const maxRetries = 3;
     DBG.log('VPLINK', `fetchVipteamRedirectUrl: type=${type}, vpKey=${vpKey}, attempt=${attempt}/${maxRetries}`);
     
@@ -2450,9 +2072,9 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function processVipteamResponse(data, pin, vpKey, attempt) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     const maxRetries = 3;
     const destinationUrl = data.destinationLink || CONFIG.fallbackRedirectUrl;
     
@@ -2461,7 +2083,7 @@
     queueLog('📋', 'PARSING SERVER RESPONSE...', '#00f2ff', 'log-highlight');
     queueLog('●', `TYPE: ${(data.type || 'N/A').toUpperCase()}`, '#7dd3fc');
     queueLog('●', `VERIFIED: ${data.verified ? '✅ YES' : '❌ NO'}`, data.verified ? '#2ecc71' : '#ff4757');
-    queueLog('●', `OWNER: ${data.owner || '@A2MBD3'}`, '#c4b5fd');
+    queueLog('●', `OWNER: ${data.owner || '@itz_khairum'}`, '#c4b5fd');
     
     if (data.success !== undefined) {
       queueLog('●', `SUCCESS FLAG: ${data.success}`, data.success ? '#2ecc71' : '#ff4757');
@@ -2503,9 +2125,9 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function handleVipteamSuccess(url, data, pin) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('VPLINK', 'SUCCESS, redirect: ' + url.substring(0, 60));
     isRealRedirectUrl = true;
     fetchEndTime = Date.now();
@@ -2537,9 +2159,9 @@
     return fetchResult;
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function handleVipteamFailure(message) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.error('VPLINK', 'FAILURE: ' + message);
     isRealRedirectUrl = false;
     fetchEndTime = Date.now();
@@ -2571,9 +2193,9 @@
   }
 
   // ═══════════════════ POWERCHEATS EXPLOIT PANEL ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function renderExploitPanelForPowerCheats(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('UI', 'Rendering POWERCHEATS EXPLOIT panel, apiType=' + apiType);
     document.getElementById("nebula-exploit")?.remove();
     
@@ -2607,7 +2229,7 @@
         <div id="nb-progress-exploit" class="nb-progress-bar-fill"></div>
       </div>
       
-      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© Team CRX</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
+      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© CRACKED VAULT X</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
     `);
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -2639,9 +2261,9 @@
     performPowerCheatsExtraction(apiType);
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function extractVplinkFromPagePowerCheats() {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     try {
         DBG.log('POWERCHEATS', 'Starting PowerCheats vplink.in scan...');
         
@@ -2687,9 +2309,9 @@
     }
   }
 
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   async function performPowerCheatsExtraction(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('POWERCHEATS', 'Starting PowerCheats extraction process');
     
     queueLog('🔍', 'EXTRACTING VPLINK.IN USING POWERCHEATS METHODS...', '#ff00ff', 'log-highlight');
@@ -2757,9 +2379,9 @@
   }
 
   // ═══════════════════ UNIVERSAL VPLINK.IN PANEL ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   function renderUniversalVplinkPanel(apiType) {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('UI', 'Rendering UNIVERSAL VPLINK panel, apiType=' + apiType);
     document.getElementById("nebula-exploit")?.remove();
     
@@ -2769,9 +2391,9 @@
     logQueue = [];
     fillerLogsScheduled = false;
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     function resetUniversalPanel() {
-      // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+      // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
       exploitProgressActive = false;
       progressCompleted = false;
       fetchCompleted = false;
@@ -2804,9 +2426,9 @@
       if (submitBtn) submitBtn.disabled = true;
     }
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     function handleUniversalVplinkFailure(message) {
-      // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+      // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
       DBG.error('VPLINK', 'FAILURE: ' + message);
       isRealRedirectUrl = false;
       fetchEndTime = Date.now();
@@ -2827,16 +2449,16 @@
       setTimeout(() => { resetUniversalPanel(); }, 2500);
     }
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     function processUniversalVplinkResponse(data, pin, vpKey, attempt) {
-      // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+      // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
       const maxRetries = 3;
       const destinationUrl = data.destinationLink || null;
 
       queueLog('📋', 'PARSING SERVER RESPONSE...', '#00f2ff', 'log-highlight');
       queueLog('●', `TYPE: ${(data.type || 'N/A').toUpperCase()}`, '#7dd3fc');
       queueLog('●', `VERIFIED: ${data.verified ? '✅ YES' : '❌ NO'}`, data.verified ? '#2ecc71' : '#ff4757');
-      queueLog('●', `OWNER: ${data.owner || '@A2MBD3'}`, '#c4b5fd');
+      queueLog('●', `OWNER: ${data.owner || '@itz_khairum'}`, '#c4b5fd');
 
       if (data.destinationLink) {
         const truncated = data.destinationLink.length > 50 ? data.destinationLink.substring(0, 50) + '...' : data.destinationLink;
@@ -2865,9 +2487,9 @@
       }
     }
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     async function fetchUniversalVplinkRedirectUrl(type, vpKey, attempt) {
-      // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+      // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
       attempt = attempt || 1;
       const maxRetries = 3;
       DBG.log('VPLINK', `fetchUniversalVplinkRedirectUrl: type=${type}, vpKey=${vpKey}, attempt=${attempt}/${maxRetries}`);
@@ -2936,9 +2558,9 @@
       }
     }
 
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     async function performUniversalVplinkExtraction(vplinkUrl) {
-      // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+      // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
       DBG.log('VPLINK', 'Starting universal extraction process');
 
       queueLog('🔍', 'EXTRACTING VP KEY FROM URL...', '#ff00ff', 'log-highlight');
@@ -3000,7 +2622,7 @@
         <div id="nb-progress-exploit" class="nb-progress-bar-fill"></div>
       </div>
       
-      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© Team CRX</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
+      <div class="nb-footer"><a href="https://crxx.netlify.app" target="_blank">© CRACKED VAULT X</a> | ${APP_FULL_NAME} | 📳 Shake to change track 🎵</div>
     `);
     ov.appendChild(wrapper);
     document.body.appendChild(ov);
@@ -3081,9 +2703,9 @@
   }
 
   // ═══════════════════ BOOT ═══════════════════
-  // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+  // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
   (async function () {
-    // Credit: Abdullah Al Mamun (@a2mbd3) - a2mbd3.paged.dev
+    // Credit: Abdullah Al Mamun (@itz_khairum) - a2mbd3.paged.dev
     DBG.log('BOOT', '═══════ ' + APP_FULL_NAME + ' BOOTING ═══════');
     DBG.log('BOOT', 'USER_ID: ' + USER_ID);
     DBG.log('BOOT', 'directTarget: ' + (directTarget ? directTarget.name : 'none'));
